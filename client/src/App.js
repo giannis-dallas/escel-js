@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import XLSX  from 'xlsx';
+// import XLSX  from 'xlsx';
 
 class App extends Component {
   state = {
     response: '',
     post: '',
     responseToPost: '',
+    genNumber: '',
   };
 
   componentDidMount() {
@@ -16,12 +17,20 @@ class App extends Component {
       .then(res => this.setState({ response: res.express }))
       .catch(err => console.log(err));
   }
+
   callApi = async () => {
     const response = await fetch('/api/hello');
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     return body;
   };
+  
+  requestNumber = async e => {
+    console.log('test');
+    const response = await fetch ('/api/number');
+    const data = await response.text();
+    console.log('data = ', data)
+  }
   
   handleSubmit = async e => {
     e.preventDefault();
@@ -69,6 +78,8 @@ class App extends Component {
         </form>
         <p>{this.state.responseToPost}</p>
 
+        <button onClick= {this.requestNumber}>Generate Number</button>
+        <p>{this.state.genNumber}</p>
       </div>
     );
   }
